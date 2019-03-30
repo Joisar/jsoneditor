@@ -284,8 +284,9 @@ Node.prototype.updateError = function() {
     popover.appendChild(document.createTextNode(error.message));
 
     var button = document.createElement('button');
+    var errorType = error.type || 'warning'
     button.type = 'button';
-    button.className = 'jsoneditor-button jsoneditor-schema-error';
+    button.className = 'jsoneditor-button jsoneditor-schema-error jsoneditor-' + errorType + '-error';
     button.appendChild(popover);
 
     // update the direction of the popover
@@ -1964,6 +1965,7 @@ Node.prototype.validate = function () {
             return {
               node: node,
               error: {
+                type: 'duplicate',
                 message: translate('duplicateKey') + ' "' + node.field + '"'
               }
             }

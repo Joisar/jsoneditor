@@ -840,6 +840,8 @@ exports.stringifyPath = function stringifyPath(path) {
  * @return {Object} The error
  */
 exports.improveSchemaError = function (error) {
+  error.type = 'validation';
+
   if (error.keyword === 'enum' && Array.isArray(error.schema)) {
     var enums = error.schema;
     if (enums) {

@@ -552,7 +552,7 @@ textmode._emitSelectionChange = function () {
 textmode._refreshAnnotations = function () {  
   var session = this.aceEditor && this.aceEditor.getSession();
   if (session) {
-    var errEnnotations = session.getAnnotations().filter(function(annotation) {return annotation.type === 'error' });
+    var errEnnotations = session.getAnnotations().filter(function(annotation) {return annotation.type === 'parse' });
     session.setAnnotations(errEnnotations);
   }
 };
@@ -757,7 +757,7 @@ textmode.validate = function () {
         this.parseErrorIndication.title = !isNaN(line) ? ('parse error on line ' + line) : 'parse error - check that the json is valid';
       }
       parseErrors.push({
-        type: 'error',
+        type: 'parse',
         message: err.message.replace(/\n/g, '<br>'),
         line: line
       });
@@ -771,7 +771,6 @@ textmode.validate = function () {
       var valid = this.validateSchema(json);
       if (!valid) {
         schemaErrors = this.validateSchema.errors.map(function (error) {
-          error.type = "validation";
           return util.improveSchemaError(error);
         });
       }
@@ -930,10 +929,10 @@ textmode._renderErrors = function(errors, noValidation) {
 
         var trEl = document.createElement('tr');
         trEl.className = !isNaN(line) ? 'jump-to-line' : '';
-        if (error.type === 'error') {
-          trEl.className += ' parse-error';
+        if (error.type === 'parse') {
+          trEl.className += ' jsoneditor-error';
         } else {
-          trEl.className += ' validation-error';
+          trEl.className += ' jsoneditor-warning';
           ++validationErrorsCount;
         }
         

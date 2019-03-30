@@ -295,7 +295,11 @@ treemode.get = function () {
   if (this.node) {
     var duplicateErrors = this.node.validate();
     if (duplicateErrors && duplicateErrors.length > 0) {
-      throw duplicateErrors[0];
+      var path = duplicateErrors[0].node.getPath()
+      var error = new Error(duplicateErrors[0].error.message + ' (path: "' + util.stringifyPath(path) + '")');
+      error.path = path
+
+      throw error;
     }
   }
 
