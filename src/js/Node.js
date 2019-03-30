@@ -1569,7 +1569,8 @@ Node.prototype._getDomValue = function(silent) {
     }
     catch (err) {
       this.value = undefined;
-      // TODO: sent an action with the new, invalid value?
+      this._debouncedOnChangeValue();
+
       if (silent !== true) {
         throw err;
       }
@@ -1618,13 +1619,13 @@ Node.prototype._onChangeField = function () {
   var oldSelection = this.editor.getDomSelection();
   var previous = this.previousField || '';
   if (oldSelection.range) {
-    var undoDiff = util.textDiff(this.field, previous);
+    var undoDiff = util.textDiff(String(this.field), String(previous));
     oldSelection.range.startOffset = undoDiff.start;
     oldSelection.range.endOffset = undoDiff.end;
   }
   var newSelection = this.editor.getDomSelection();
   if (newSelection.range) {
-    var redoDiff = util.textDiff(previous, this.field);
+    var redoDiff = util.textDiff(String(previous), String(this.field));
     newSelection.range.startOffset = redoDiff.start;
     newSelection.range.endOffset = redoDiff.end;
   }
@@ -1903,6 +1904,8 @@ Node.prototype._getDomField = function(silent) {
     }
     catch (err) {
       this.field = undefined;
+      this._debouncedOnChangeField();
+
       // TODO: sent an action here, with the new, invalid value?
       if (silent !== true) {
         throw err;
@@ -1971,6 +1974,23 @@ Node.prototype.validate = function () {
             }
           });
     }
+  }
+
+  // check whether the node field and value can be parsed
+  try {
+    this._getDomField()
+    this._getDomValue()
+  }
+  catch (err) {
+    errors.push({
+      node: this,
+      error: {
+        type: 'parse',
+        message: translate('parseError', {
+          value: this.valueInnerText
+        })
+      }
+    })
   }
 
   // recurse over the childs

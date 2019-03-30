@@ -606,14 +606,21 @@ treemode.validate = function () {
     return;
   }
 
-  var json = root.getValue();
+  var json
+  try {
+    // parsing can fail
+    json = root.getValue();
+  }
+  catch (err) {
+    json = undefined
+  }
 
   // check for duplicate keys
   var duplicateErrors = root.validate();
 
   // execute JSON schema validation
   var schemaErrors = [];
-  if (this.validateSchema) {
+  if (this.validateSchema && json !== undefined) {
     var valid = this.validateSchema(json);
     if (!valid) {
       // apply all new errors
@@ -638,7 +645,12 @@ treemode.validate = function () {
     this.validationSequence++;
     var me = this;
     var seq = this.validationSequence;
-    this._validateCustom(json)
+
+    var customErrorsPromise = (json !== undefined)
+        ? this._validateCustom(json)
+        : Promise.resolve([])
+
+    customErrorsPromise
         .then(function (customValidationErrors) {
           // only apply when there was no other validation started whilst resolving async results
           if (seq === me.validationSequence) {

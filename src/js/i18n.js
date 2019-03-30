@@ -19,6 +19,7 @@ var _defs = {
     descendingTitle: 'Sort the childs of this ${type} in descending order',
     drag: 'Drag to move this field (Alt+Shift+Arrows)',
     duplicateKey: 'duplicate key',
+    parseError: 'Cannot parse "${value}" into a json string',
     duplicateText: 'Duplicate',
     duplicateTitle: 'Duplicate selected fields (Ctrl+D)',
     duplicateField: 'Duplicate this field (Ctrl+D)',

@@ -387,7 +387,8 @@ div.jsoneditor-tree .jsoneditor-button.jsoneditor-schema-error {
   background: url('./img/jsoneditor-icons.svg') -168px -48px;
 }
 
-div.jsoneditor-tree .jsoneditor-button.jsoneditor-duplicate-error {
+div.jsoneditor-tree .jsoneditor-button.jsoneditor-duplicate-error,
+div.jsoneditor-tree .jsoneditor-button.jsoneditor-parse-error {
   background: url('./img/jsoneditor-icons.svg') -25px 0;
 }
 
