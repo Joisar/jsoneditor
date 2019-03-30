@@ -546,7 +546,16 @@ treemode._onChange = function () {
   // trigger the onChangeJSON callback
   if (this.options.onChangeJSON) {
     try {
-      this.options.onChangeJSON(this.get());
+      var json;
+      try {
+        json = this.get();
+      }
+      catch (err) {
+        // if we can't parse the json, don't invoke the onChangeJSON callback
+        return;
+      }
+
+      this.options.onChangeJSON(json);
     }
     catch (err) {
       console.error('Error in onChangeJSON callback: ', err);
@@ -556,7 +565,16 @@ treemode._onChange = function () {
   // trigger the onChangeText callback
   if (this.options.onChangeText) {
     try {
-      this.options.onChangeText(this.getText());
+      var jsonText
+      try {
+        jsonText = this.getText()
+      }
+      catch (err) {
+        // if we can't parse the json, don't invoke the onChangeText callback
+        return;
+      }
+
+      this.options.onChangeText(jsonText);
     }
     catch (err) {
       console.error('Error in onChangeText callback: ', err);

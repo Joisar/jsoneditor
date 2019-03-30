@@ -3,6 +3,13 @@
 https://github.com/josdejong/jsoneditor
 
 
+## 2018-03-28, version 5.32.2
+
+- Duplication warnings are now changed into errors, since they can lead to
+  loss of data when used as a controlled component for example in React,
+  see #671. Thanks @yuxizhe.
+
+
 ## 2018-03-28, version 5.32.1
 
 - Fixed a regression in parsing JSON paths: numbers where parsed as strings
